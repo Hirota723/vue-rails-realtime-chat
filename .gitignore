@@ -1,1 +1,17 @@
+# パッケージマネージャーの依存関係
 node_modules/
+.bundle/
+vendor/bundle/
+
+# OS固有のファイル
+.DS_Store
+Thumbs.db
+
+# エディタ設定
+.vscode/
+.idea/
+
+# 環境変数（セキュリティのため絶対にあげない）
+.env
+.env.local
+.env.*.local
