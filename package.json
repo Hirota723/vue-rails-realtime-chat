@@ -8,13 +8,24 @@
     "dev:backend": "cd backend && bundle exec rails s",
     "dev": "concurrently --names \"FRONT,BACK\" -c \"bgGreen.bold,bgBlue.bold\" \"npm:dev:frontend\" \"npm:dev:backend\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "commit": "npx git-cz"
+    "commit": "npx git-cz",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^9.2.1",
-    "git-cz": "^4.9.0"
+    "git-cz": "^4.9.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7"
+  },
+  "lint-staged": {
+    "frontend/**/*.{js,ts,vue,json,css}": [
+      "bash -c 'cd frontend && ./node_modules/.bin/biome check --write \"$@\"' _"
+    ],
+    "backend/**/*.rb": [
+      "bash -c 'cd backend && bundle exec rubocop -A --force-exclusion \"$@\"' _"
+    ]
   }
 }
