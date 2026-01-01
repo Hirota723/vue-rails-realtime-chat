@@ -1,0 +1,26 @@
+echo "🐶 Husky: プリコミットチェックを開始します..."
+
+# 1. main、develop、devブランチへの直接コミットを制限
+current_branch=$(git symbolic-ref --short HEAD)
+PROTECTED_BRANCHES="main develop dev"
+
+for protected_branch in $PROTECTED_BRANCHES; do
+  if [ "$current_branch" = "$protected_branch" ]; then
+    echo "❌ エラー: '$current_branch' ブランチへの直接コミットは許可されていません！"
+    echo "新しいフィーチャーブランチ（例: feat/your-feature-name）を作成してください。"
+    exit 1
+  fi
+done
+
+echo "✅ ブランチチェックをパスしました。"
+
+# 2. lint-staged を実行
+echo "🐶 Husky: コードの自動整形とチェックを実行中..."
+npx lint-staged
+
+if [ $? -ne 0 ]; then
+  echo "❌ チェックに失敗しました。問題を修正して再度コミットしてください。"
+  exit 1
+fi
+
+echo "✅ すべてのチェックをパスしました。コミットを完了します！"
