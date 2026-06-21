@@ -12,12 +12,14 @@ import { ref } from "vue";
 const message = ref("");
 
 const test = async () => {
-  try {
-    const response = await fetch("http://localhost:3000/api/test");
-    const data = await response.json();
-    message.value = data.message;
-  } catch (error) {
-    console.error("API Error:", error);
-  }
+	try {
+		const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+		const response = await fetch(`${apiUrl}/api/test`);
+
+		const data = await response.json();
+		message.value = data.message;
+	} catch (error) {
+		console.error("API Error:", error);
+	}
 };
 </script>
