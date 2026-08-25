@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>ApiTest</h1>
-    <button @click="test">ApiTest</button>
+    <button @click="_test">ApiTest</button>
     <p>{{ message }}</p>
   </div>
 </template>
@@ -11,7 +11,7 @@ import { ref } from "vue";
 
 const message = ref("");
 
-const test = async () => {
+const _test = async () => {
 	try {
 		const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
 		const response = await fetch(`${apiUrl}/api/test`);
