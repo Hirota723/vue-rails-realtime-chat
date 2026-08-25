@@ -6,5 +6,6 @@
 </template>
 
 <script setup lang="ts">
+// biome-ignore lint/correctness/noUnusedImports: used in the template
 import ApiTest from "./components/ApiTest.vue";
 </script>
