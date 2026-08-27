@@ -9,6 +9,12 @@
     "dev": "concurrently --names \"FRONT,BACK\" -c \"bgGreen.bold,bgBlue.bold\" \"npm:dev:frontend\" \"npm:dev:backend\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "npx git-cz",
+    "fix:frontend": "cd frontend && pnpm biome check --write --unsafe .",
+    "fix:backend": "cd backend && bundle exec rubocop -A",
+    "fix:all": "pnpm fix:frontend && pnpm fix:backend",
+    "check:frontend": "cd frontend && pnpm biome check . && pnpm type-check && pnpm test:unit --run",
+    "check:backend": "cd backend && bundle exec rubocop && bundle exec rails test",
+    "check:all": "pnpm check:frontend && pnpm check:backend",
     "prepare": "husky"
   },
   "keywords": [],
@@ -23,7 +29,7 @@
   },
   "lint-staged": {
     "frontend/**/*.{js,ts,vue,json,css}": [
-      "bash -c 'cd frontend && ./node_modules/.bin/biome check --write \"$@\"' _"
+      "bash -c 'cd frontend && ./node_modules/.bin/biome check --write --unsafe \"$@\"' _"
     ],
     "backend/**/*.rb": [
       "bash -c 'cd backend && bundle exec rubocop -A --force-exclusion \"$@\"' _"
