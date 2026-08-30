@@ -18,10 +18,10 @@
 import axios from "axios";
 import { onMounted, ref } from "vue";
 
-interface ChatRoom {
+type ChatRoom = {
 	id: number;
 	name: string;
-}
+};
 
 const chatRooms = ref<ChatRoom[]>([]);
 const newRoomName = ref("");
