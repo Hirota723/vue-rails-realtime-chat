@@ -28,6 +28,8 @@
 import axios from "axios";
 import { inject, onMounted, onUnmounted, ref } from "vue";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 type Message = {
 	id: number;
 	sender_name: string;
@@ -62,7 +64,7 @@ const subscription = ref<CableSubscription | null>(null);
 const fetchMessages = async () => {
 	try {
 		const response = await axios.get(
-			`http://localhost:3000/rooms/${props.roomId}/messages`,
+			`${API_URL}/rooms/${props.roomId}/messages`,
 		);
 		messages.value = response.data as Message[];
 	} catch (error) {
@@ -89,7 +91,7 @@ const sendMessage = async () => {
 	if (newMessageContent.value.trim() === "") return;
 
 	try {
-		await axios.post(`http://localhost:3000/rooms/${props.roomId}/messages`, {
+		await axios.post(`${API_URL}/rooms/${props.roomId}/messages`, {
 			content: newMessageContent.value,
 			sender_name: senderName.value,
 		});

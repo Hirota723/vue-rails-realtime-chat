@@ -6,7 +6,8 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router/index.ts";
 
-const cable = ActionCable.createConsumer("ws://localhost:3000/cable");
+const wsUrl = import.meta.env.VITE_WS_URL || "ws://localhost:3000/cable";
+const cable = ActionCable.createConsumer(wsUrl);
 
 const app = createApp(App);
 
