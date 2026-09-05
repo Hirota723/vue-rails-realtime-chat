@@ -1,7 +1,11 @@
 <template>
-  <div id="app">
-    <router-view />
-    <ApiTest />
+  <div id="app" class="app-shell">
+    <div class="page-card">
+      <router-view />
+    </div>
+    <div class="dev-panel">
+      <ApiTest />
+    </div>
   </div>
 </template>
 
