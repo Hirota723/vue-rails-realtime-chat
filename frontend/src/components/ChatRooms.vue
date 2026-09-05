@@ -18,6 +18,8 @@
 import axios from "axios";
 import { onMounted, ref } from "vue";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 type ChatRoom = {
 	id: number;
 	name: string;
@@ -28,7 +30,7 @@ const newRoomName = ref("");
 
 const fetchChatRooms = async () => {
 	try {
-		const response = await axios.get("http://localhost:3000/rooms");
+		const response = await axios.get(`${API_URL}/rooms`);
 		chatRooms.value = response.data as ChatRoom[];
 	} catch (error) {
 		console.error(error);
@@ -40,7 +42,7 @@ const createRoom = async () => {
 	if (newRoomName.value.trim() === "") return;
 
 	try {
-		const response = await axios.post("http://localhost:3000/rooms", {
+		const response = await axios.post(`${API_URL}/rooms`, {
 			name: newRoomName.value,
 		});
 		chatRooms.value.push(response.data as ChatRoom);
