@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { onMounted, ref } from "vue";
+import { inject, onMounted, onUnmounted, ref } from "vue";
 
 type Message = {
 	id: number;
@@ -34,13 +34,30 @@ type Message = {
 	content: string;
 };
 
+type CableSubscription = {
+	unsubscribe: () => void;
+};
+
+type CableConsumer = {
+	subscriptions: {
+		create: (
+			params: { channel: string; room_id: string | number },
+			handlers: { received: (message: Message) => void },
+		) => CableSubscription;
+	};
+};
+
 const props = defineProps<{
 	roomId: string | number;
 }>();
 
+const cable = inject<CableConsumer | null>("cable", null);
+
 const messages = ref<Message[]>([]);
 const senderName = ref("");
 const newMessageContent = ref("");
+
+const subscription = ref<CableSubscription | null>(null);
 
 const fetchMessages = async () => {
 	try {
@@ -51,6 +68,20 @@ const fetchMessages = async () => {
 	} catch (error) {
 		console.error(error);
 	}
+};
+
+const createSubscription = () => {
+	if (!cable) return;
+
+	subscription.value = cable.subscriptions.create(
+		{ channel: "RoomChannel", room_id: props.roomId },
+		{
+			received: (message: Message) => {
+				console.log(message);
+				messages.value.push(message);
+			},
+		},
+	);
 };
 
 // biome-ignore lint/correctness/noUnusedVariables: used in the template
@@ -70,5 +101,12 @@ const sendMessage = async () => {
 
 onMounted(() => {
 	fetchMessages();
+	createSubscription();
+});
+
+onUnmounted(() => {
+	if (subscription.value) {
+		subscription.value.unsubscribe();
+	}
 });
 </script>

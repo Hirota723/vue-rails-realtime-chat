@@ -10,6 +10,7 @@ class MessagesController < ApplicationController
     room = Room.find(params[:room_id])
     message = room.messages.create(message_params)
     render json: message, status: :created
+    ActionCable.server.broadcast "room_channel_#{params[:room_id]}", message
   end
 
   private
